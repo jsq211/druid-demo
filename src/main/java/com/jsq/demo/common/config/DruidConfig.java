@@ -3,6 +3,7 @@ package com.jsq.demo.common.config;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -30,9 +31,8 @@ public class DruidConfig {
 
         initParams.put("loginUsername","admin");
         initParams.put("loginPassword","123456");
-        //默认就是允许所有访问
         initParams.put("allow","");
-        initParams.put("deny","192.168.15.21");
+        initParams.put("deny","172.19.162.1");
 
         bean.setInitParameters(initParams);
         return bean;
@@ -53,5 +53,9 @@ public class DruidConfig {
 
         return  bean;
     }
-
+    @Bean(value = "druid-stat-interceptor")
+    public DruidStatInterceptor DruidStatInterceptor() {
+        DruidStatInterceptor druidStatInterceptor = new DruidStatInterceptor();
+        return druidStatInterceptor;
+    }
 }

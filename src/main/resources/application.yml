@@ -1,4 +1,4 @@
-
+#说明，由于主要用于测试功能，相关的配置都进行了相应的缩小
 spring:
   datasource:
     druid:
@@ -6,8 +6,11 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
       password: admin
+      #初始化连接数
       initial-size: 10
+      #最大连接数
       max-active: 20
+      #最小连接数
       min-idle: 10
       #回收时间
       remove-abandoned-timeout: 6000
@@ -25,21 +28,25 @@ spring:
       test-on-return: true
       #运行
       test-while-idle: true
-      #
+      #检测连接间隔
       time-between-eviction-runs-millis: 300
+      #移除连接
       remove-abandoned: true
+      #检测移除时间
       remove-abandoned-timeout-millis: 300
-      pool-prepared-statements: true
-      max-pool-prepared-statement-per-connection-size: 200
       filters: wall,stat,logback
       filter:
+        #sql监测
         stat:
           enabled: true
+          #sql合并
           merge-sql: true
-          slow-sql-millis: 5
+          slow-sql-millis: 0
         logback:
+          #日志记录
           enabled: true
         wall:
+          #防火墙配置
           enabled: true
           config:
             multi-statement-allow: true
