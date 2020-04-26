@@ -1,0 +1,74 @@
+
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&&useSSL=false&amp&serverTimezone=GMT%2B8
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: admin
+      initial-size: 10
+      max-active: 20
+      min-idle: 10
+      #回收时间
+      remove-abandoned-timeout: 6000
+      #回收日志
+      log-abandoned: true
+      #尝试连接时间
+      max-wait: 10000
+      #是否跳出连接
+      break-after-acquire-failure: false
+      connection-error-retry-attempts: 1
+      validation-query: SELECT 1
+      #查询校验
+      test-on-borrow: true
+      #返回校验
+      test-on-return: true
+      #运行
+      test-while-idle: true
+      #
+      time-between-eviction-runs-millis: 300
+      remove-abandoned: true
+      remove-abandoned-timeout-millis: 300
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 200
+      filters: wall,stat,logback
+      filter:
+        stat:
+          enabled: true
+          merge-sql: true
+          slow-sql-millis: 5
+        logback:
+          enabled: true
+        wall:
+          enabled: true
+          config:
+            multi-statement-allow: true
+      use-global-data-source-stat: true
+
+  jackson:
+    serialization:
+      indent_output: true
+  redis:
+    cache.clusterNodes: 127.0.0.1:6379
+    cache.commandTimeout: 5000
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include:  health,info,beans # 健康监控信息
+mybatis:
+  config-location:
+    classpath: mybatis-config.xml
+#  mapper-locations: classpath*:com.jsq.demo.dao/**.xml
+
+server:
+  port: 8088
+
+
+rocketmq:
+  nameServer: 127.0.0.1:9876
+  producer:
+    group: test-for-jsq
+  consumer:
+    group: test-for-jsq
