@@ -19,21 +19,21 @@ spring:
       #尝试连接时间
       max-wait: 10000
       #是否跳出连接
-      break-after-acquire-failure: false
       connection-error-retry-attempts: 1
       validation-query: SELECT 1
       #查询校验
-      test-on-borrow: true
+      test-on-borrow: false
       #返回校验
-      test-on-return: true
+      test-on-return: false
       #运行
       test-while-idle: true
       #检测连接间隔
-      time-between-eviction-runs-millis: 300
+      time-between-eviction-runs-millis: 3000
       #移除连接
       remove-abandoned: true
       #检测移除时间
       remove-abandoned-timeout-millis: 300
+      #开启拦截器项目
       filters: wall,stat,logback
       filter:
         #sql监测
@@ -50,7 +50,16 @@ spring:
           enabled: true
           config:
             multi-statement-allow: true
+            #可以考虑采用mybatis-plus的监控插件，相对简洁
+#        slf4j:
+#          enabled: false
+#          statement-create-after-log-enabled: false
+#          statement-close-after-log-enabled: false
+#          result-set-open-after-log-enabled: false
+#          result-set-close-after-log-enabled: false
       use-global-data-source-stat: true
+      #启用非公平锁 在开启maxWait时建议启用
+      use-unfair-lock: true
 
   jackson:
     serialization:
