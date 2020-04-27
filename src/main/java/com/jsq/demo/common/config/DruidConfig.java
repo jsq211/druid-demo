@@ -4,17 +4,25 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
+import org.springframework.aop.support.DefaultPointcutAdvisor;
+import org.springframework.aop.support.JdkRegexpMethodPointcut;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * druid-config
+ * @author jsq
+ */
 @Configuration
 public class DruidConfig {
 
@@ -53,9 +61,42 @@ public class DruidConfig {
 
         return  bean;
     }
+
+    /**
+     * 通知
+     * @return
+     */
     @Bean(value = "druid-stat-interceptor")
     public DruidStatInterceptor DruidStatInterceptor() {
         DruidStatInterceptor druidStatInterceptor = new DruidStatInterceptor();
         return druidStatInterceptor;
+    }
+
+    /**
+     * 切点
+     * @return
+     */
+    @Bean(name = "druid-stat-pointcut")
+    @Scope("prototype")
+    public JdkRegexpMethodPointcut druidStatPointcut() {
+        final JdkRegexpMethodPointcut pointcut = new JdkRegexpMethodPointcut();
+        pointcut.setPatterns("com.jsq.demo.*");
+        return pointcut;
+    }
+
+    /**
+     * 织入监听
+     * @param druidStatInterceptor
+     * @param druidStatPointcut
+     * @return
+     */
+    @Bean
+    public DefaultPointcutAdvisor druidStatAdvisor(@Qualifier("druid-stat-interceptor") final DruidStatInterceptor druidStatInterceptor,
+                                                   @Qualifier("druid-stat-pointcut") final JdkRegexpMethodPointcut druidStatPointcut) {
+        final DefaultPointcutAdvisor defaultPointAdvisor = new DefaultPointcutAdvisor();
+        defaultPointAdvisor.setPointcut(druidStatPointcut);
+        defaultPointAdvisor.setAdvice(druidStatInterceptor);
+
+        return defaultPointAdvisor;
     }
 }

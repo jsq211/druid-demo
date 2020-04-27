@@ -13,13 +13,14 @@ spring:
       #最小连接数
       min-idle: 10
       #回收时间
-      remove-abandoned-timeout: 6000
+      remove-abandoned-timeout: 600
       #回收日志
       log-abandoned: true
       #尝试连接时间
       max-wait: 10000
       #是否跳出连接
-      connection-error-retry-attempts: 1
+      connection-error-retry-attempts: 0
+      #校验sql 在开启校验检测的时候必填
       validation-query: SELECT 1
       #查询校验
       test-on-borrow: false
@@ -28,11 +29,11 @@ spring:
       #运行
       test-while-idle: true
       #检测连接间隔
-      time-between-eviction-runs-millis: 3000
+      time-between-eviction-runs-millis: 300
       #移除连接
       remove-abandoned: true
       #检测移除时间
-      remove-abandoned-timeout-millis: 300
+      remove-abandoned-timeout-millis: 6000
       #开启拦截器项目
       filters: wall,stat,logback
       filter:
@@ -50,16 +51,17 @@ spring:
           enabled: true
           config:
             multi-statement-allow: true
-            #可以考虑采用mybatis-plus的监控插件，相对简洁
+#            可以考虑采用mybatis-plus的监控插件，相对简洁
 #        slf4j:
 #          enabled: false
 #          statement-create-after-log-enabled: false
 #          statement-close-after-log-enabled: false
 #          result-set-open-after-log-enabled: false
 #          result-set-close-after-log-enabled: false
-      use-global-data-source-stat: true
+      #合并集群druid监控
+#      use-global-data-source-stat: true
       #启用非公平锁 在开启maxWait时建议启用
-      use-unfair-lock: true
+#      use-unfair-lock: true
 
   jackson:
     serialization:
