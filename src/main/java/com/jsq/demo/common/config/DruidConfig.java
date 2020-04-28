@@ -79,8 +79,9 @@ public class DruidConfig {
     @Bean(name = "druid-stat-pointcut")
     @Scope("prototype")
     public JdkRegexpMethodPointcut druidStatPointcut() {
-        final JdkRegexpMethodPointcut pointcut = new JdkRegexpMethodPointcut();
-        pointcut.setPatterns("com.jsq.demo.*");
+        JdkRegexpMethodPointcut pointcut = new JdkRegexpMethodPointcut();
+        //对正则匹配的类进行spring监听
+        pointcut.setPatterns("com.jsq.demo.dao.*");
         return pointcut;
     }
 
@@ -91,9 +92,9 @@ public class DruidConfig {
      * @return
      */
     @Bean
-    public DefaultPointcutAdvisor druidStatAdvisor(@Qualifier("druid-stat-interceptor") final DruidStatInterceptor druidStatInterceptor,
-                                                   @Qualifier("druid-stat-pointcut") final JdkRegexpMethodPointcut druidStatPointcut) {
-        final DefaultPointcutAdvisor defaultPointAdvisor = new DefaultPointcutAdvisor();
+    public DefaultPointcutAdvisor druidStatAdvisor(@Qualifier("druid-stat-interceptor") DruidStatInterceptor druidStatInterceptor,
+                                                   @Qualifier("druid-stat-pointcut") JdkRegexpMethodPointcut druidStatPointcut) {
+        DefaultPointcutAdvisor defaultPointAdvisor = new DefaultPointcutAdvisor();
         defaultPointAdvisor.setPointcut(druidStatPointcut);
         defaultPointAdvisor.setAdvice(druidStatInterceptor);
 

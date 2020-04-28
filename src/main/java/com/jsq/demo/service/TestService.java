@@ -1,6 +1,8 @@
 package com.jsq.demo.service;
 
+import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.fastjson.JSON;
+import com.jsq.demo.DemoApplication;
 import com.jsq.demo.common.utils.SpringUtil;
 import com.jsq.demo.dao.TestDAO;
 import com.jsq.demo.pojo.po.TestPO;
@@ -33,51 +35,9 @@ public class TestService {
     }
     @Transactional(rollbackFor = Exception.class)
     public String sayHi(String name,String n){
-        TestPO testPO = testDAO.findOne("1");
-//        Random random=new Random();
-//        Thread t1 = new Thread(()->{
-//            TestPO testPO = testDAO.findOne("1");
-////            testPO.setN(random.nextInt(100));
-//            testPO.setId("222");
-//            testDAO.insert(testPO);
-//            try {
-//                System.out.println("sleep----------------");
-//                Thread.sleep(1000000000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        Thread t2 = new Thread(()->{
-//            System.out.println("thread name :"+Thread.currentThread().getName());
-//            TestPO testPO = testDAO.findOne("222");
-//            testDAO.insert(testPO);
-//            try {
-//                System.out.println("sleep----------------");
-//                Thread.sleep(1000000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        Thread t3 = new Thread(()->{
-//            System.out.println("thread name :"+Thread.currentThread().getName());
-//            TestPO testPO = testDAO.findOne("222");
-//            testDAO.insert(testPO);
-//            try {
-//                System.out.println("sleep----------------");
-//                Thread.sleep(1000000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        t1.start();
-//        try {
-//            Thread.sleep(100);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        t2.start();
-//        t3.start();
-////        testDAO.insert(name,n);
+        TestPO testPO = testDAO.findOne(String.valueOf((int)(Math.random() * 10000)));
+        DruidDataSource druidDataSource = (DruidDataSource) DemoApplication.getApplicationContext().getBean("druid");
+//        TestPO t = testDAO.select();
         return JSON.toJSONString(testPO);
     }
 }

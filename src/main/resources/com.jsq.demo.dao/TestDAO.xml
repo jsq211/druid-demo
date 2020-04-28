@@ -9,4 +9,8 @@
         values
           (#{name},#{n})
     </insert>
+    <select id="select" resultType="com.jsq.demo.pojo.po.TestPO">
+        select * from test
+        limit 1
+    </select>
 </mapper>

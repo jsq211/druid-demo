@@ -16,4 +16,6 @@ import org.springframework.stereotype.Component;
 public interface TestDAO extends MyBaseDAO<TestPO>{
 
     void insert(@Param("name")String name, @Param("n") String n);
+
+    TestPO select();
 }
