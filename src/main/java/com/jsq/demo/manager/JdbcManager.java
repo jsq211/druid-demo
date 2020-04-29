@@ -1,4 +1,4 @@
-package com.jsq.demo.common.utils;
+package com.jsq.demo.manager;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.google.common.collect.Maps;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @author jsq
  */
 @Component
-public class JdbcComponent {
+public class JdbcManager {
     /**
      * 数据源配置
      */
@@ -45,7 +45,6 @@ public class JdbcComponent {
         //获取通用配置
         DruidDataSource druidDataSource = (DruidDataSource) DemoApplication.getApplicationContext().getBean("druid");
         //查询dao 进行相应数据替换
-
         return druidDataSource;
     }
 }
