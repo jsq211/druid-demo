@@ -47,7 +47,7 @@ spring:
           enabled: true
           #sql合并
           merge-sql: true
-          slow-sql-millis: 0
+          slow-sql-millis: 1
         logback:
           #日志记录
           enabled: true
