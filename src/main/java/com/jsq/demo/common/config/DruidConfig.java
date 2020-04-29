@@ -85,7 +85,7 @@ public class DruidConfig {
     public JdkRegexpMethodPointcut druidStatPointcut() {
         JdkRegexpMethodPointcut pointcut = new JdkRegexpMethodPointcut();
         //对正则匹配的类进行spring监听
-        pointcut.setPatterns("com.jsq.demo.dao.*");
+        pointcut.setPatterns("com.jsq.demo.*");
         return pointcut;
     }
 

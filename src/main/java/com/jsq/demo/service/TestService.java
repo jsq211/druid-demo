@@ -36,8 +36,13 @@ public class TestService {
     @Transactional(rollbackFor = Exception.class)
     public String sayHi(String name,String n){
         TestPO testPO = testDAO.findOne(String.valueOf((int)(Math.random() * 10000)));
-        DruidDataSource druidDataSource = (DruidDataSource) DemoApplication.getApplicationContext().getBean("druid");
-//        TestPO t = testDAO.select();
+        if (testPO == null){
+            testPO = new TestPO();
+            testPO.setName("testName" + (int)(Math.random() * 100));
+            testPO.setN(String.valueOf((int)(Math.random() * 10000)));
+            testDAO.insert(testPO);
+        }
+//        TestPO t = testDAO.selectTest();
         return JSON.toJSONString(testPO);
     }
 }

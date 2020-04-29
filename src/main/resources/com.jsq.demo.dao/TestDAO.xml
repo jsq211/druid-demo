@@ -2,14 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jsq.demo.dao.TestDAO">
 
-
-    <insert id="insert">
-        insert into
-          test(name,n)
-        values
-          (#{name},#{n})
-    </insert>
-    <select id="select" resultType="com.jsq.demo.pojo.po.TestPO">
+    <select id="selectTest" resultType="com.jsq.demo.pojo.po.TestPO">
         select * from test
         limit 1
     </select>
