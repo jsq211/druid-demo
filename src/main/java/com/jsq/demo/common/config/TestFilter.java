@@ -19,13 +19,13 @@ public class TestFilter extends FilterEventAdapter {
 
     @Override
     protected void statementExecuteBefore(StatementProxy statement, String sql) {
-        logger.info("调用sql："+sql);
+        logger.info("自定义拦截，在执行操作前执行该方法，如打印执行sql："+sql);
         super.statementExecuteBefore(statement, sql);
     }
 
     @Override
     protected void statementExecuteAfter(StatementProxy statement, String sql, boolean result) {
-        logger.info("调用sql："+sql);
         super.statementExecuteAfter(statement, sql, result);
+        logger.info("自定义拦截器，在执行操作后执行该方法，如打印执行sql：  "+sql);
     }
 }
