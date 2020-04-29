@@ -25,10 +25,7 @@ public class JdbcComponent {
      * jdbcsql
      */
     private static Map<String, NamedParameterJdbcTemplate> namedParameterJdbcTemplateMap = Maps.newConcurrentMap();
-    /**
-     * jdbc类型
-     */
-    private static final String DRIVER_CLASS_NAME = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
     @Resource
     private TestDAO testDAO;
 
@@ -41,9 +38,14 @@ public class JdbcComponent {
     }
 
     private DataSource getDataSource(String key) {
+        if (dataSourceMap.containsKey(key)){
+            return dataSourceMap.get(key);
+        }
+
         //获取通用配置
         DruidDataSource druidDataSource = (DruidDataSource) DemoApplication.getApplicationContext().getBean("druid");
         //查询dao 进行相应数据替换
+
         return druidDataSource;
     }
 }

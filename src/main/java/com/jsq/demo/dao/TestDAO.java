@@ -17,5 +17,9 @@ public interface TestDAO extends MyBaseDAO<TestPO>{
 
     void insert(@Param("name")String name, @Param("n") String n);
 
+    /**
+     * 禁止 select * 查询会报错
+     * @return
+     */
     TestPO select();
 }
