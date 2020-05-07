@@ -6,9 +6,10 @@ import com.alibaba.druid.proxy.jdbc.DataSourceProxy;
 import com.alibaba.druid.proxy.jdbc.StatementProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-@Component
+/**
+ * testFilter
+ */
 public class TestFilter extends FilterEventAdapter {
     private static final Logger logger = LoggerFactory.getLogger(TestFilter.class);
     private static long timeMessage;
@@ -21,15 +22,17 @@ public class TestFilter extends FilterEventAdapter {
     @Override
     protected void statementExecuteBefore(StatementProxy statement, String sql) {
         logger.info("自定义拦截，在执行操作前执行该方法，如打印执行sql："+sql);
-        timeMessage = System.currentTimeMillis();
+        timeMessage = System.nanoTime();
         super.statementExecuteBefore(statement, sql);
     }
 
     @Override
     protected void statementExecuteAfter(StatementProxy statement, String sql, boolean result) {
+        long nanos = timeMessage - statement.getLastExecuteStartNano();
+        long millis = nanos / (1000 * 1000);
         super.statementExecuteAfter(statement, sql, result);
         logger.info("自定义拦截器，在执行操作后执行该方法，如打印执行sql：  "+sql);
-        if (System.currentTimeMillis() - timeMessage>0){
+        if (millis>0){
             logger.error("Error Sql : " + sql);
         }
     }
