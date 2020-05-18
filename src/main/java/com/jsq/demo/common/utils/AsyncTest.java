@@ -20,7 +20,15 @@ public class AsyncTest {
                 e.printStackTrace();
             }
             return "completableFutureA";
-        });
+        }).exceptionally(throwable -> {
+            System.out.println(throwable.getMessage());
+            throw new RuntimeException(throwable.getMessage());
+        }).thenCombine(CompletableFuture.supplyAsync(() -> {
+            throw new RuntimeException("异常报错");
+        }).exceptionally(throwable->{
+            System.out.println(throwable.getMessage());
+            throw new RuntimeException(throwable.getMessage());
+        }),(s1,s2)->s1+ " " + s2);
         CompletableFuture<String> futureB = CompletableFuture.supplyAsync(()->{
             System.out.println("启动B");
             try {
@@ -46,9 +54,9 @@ public class AsyncTest {
             return "completableFutureC";
         });
 //        System.out.println("阻塞读取");
-//        CompletableFuture result = CompletableFuture.allOf(futureA,futureB,futureC);
-//        System.out.println("读取结果 ："+ futureA.get() + futureB.get()+futureC.get());
-//        System.out.println(result);
+        CompletableFuture result = CompletableFuture.allOf(futureA,futureB,futureC);
+        System.out.println("读取结果 ："+ futureA.get() + futureB.get()+futureC.get());
+        System.out.println(result);
         System.in.read();
     }
 }
