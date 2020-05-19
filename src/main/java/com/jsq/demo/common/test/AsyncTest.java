@@ -1,4 +1,6 @@
-package com.jsq.demo.common.utils;
+package com.jsq.demo.common.test;
+
+import com.jsq.demo.common.utils.Test;
 
 import java.util.Random;
 import java.util.concurrent.*;
