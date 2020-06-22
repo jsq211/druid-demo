@@ -13,12 +13,13 @@ public class MybatisConfig {
         return new PaginationInterceptor();
     }
 
-    /**
-     * sql监控
-     * @return
-     */
-    @Bean
-    public PerformanceInterceptor performanceInterceptor() {
-        return new PerformanceInterceptor();
-    }
+//    /**
+//     * sql监控
+//     * 改成用druid进行监控，不满足时间时进行告警
+//     * @return
+//     */
+//    @Bean
+//    public PerformanceInterceptor performanceInterceptor() {
+//        return new PerformanceInterceptor();
+//    }
 }
