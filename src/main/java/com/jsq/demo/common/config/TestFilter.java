@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class TestFilter extends FilterEventAdapter {
     private static final Logger logger = LoggerFactory.getLogger(TestFilter.class);
-    protected volatile ReentrantLock lock = new ReentrantLock();
+    protected ReentrantLock lock = new ReentrantLock();
     private SqlTimeOutAlarm sqlTimeOutAlarm;
     //慢sql数
     protected long slowSqlTime = 1*1000;
@@ -63,7 +63,11 @@ public class TestFilter extends FilterEventAdapter {
             logger.info("慢sql监控线程启动-----");
             for(;;){
                 if (!slowSql.isEmpty()){
-                    lock.lock();
+                    try {
+                        lock.lockInterruptibly();
+                    } catch (InterruptedException e) {
+                        break;
+                    }
                     try {
                         Iterator it = slowSql.iterator();
                         while (it.hasNext()){
