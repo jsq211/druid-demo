@@ -1,11 +1,15 @@
 package com.jsq.demo.common.config;
 
 import com.alibaba.druid.filter.Filter;
+import com.alibaba.druid.filter.FilterEventAdapter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.alibaba.druid.support.spring.stat.DruidStatInterceptor;
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.JdkRegexpMethodPointcut;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,8 +19,10 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.annotation.Order;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -25,16 +31,17 @@ import java.util.*;
  */
 @Configuration
 public class DruidConfig {
-
-
+    
     @ConfigurationProperties(prefix = "spring.datasource.druid")
-    @Bean
-    public DataSource druid(){
+    @Bean(initMethod = "init")
+    public DruidDataSource druid(){
         DruidDataSource druidDataSource = new DruidDataSource();
         //设置自定义filter
         druidDataSource.setProxyFilters(proxyFilters());
         return druidDataSource;
     }
+
+
     @Bean
     public ServletRegistrationBean statViewServlet(){
         ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
@@ -100,11 +107,10 @@ public class DruidConfig {
         DefaultPointcutAdvisor defaultPointAdvisor = new DefaultPointcutAdvisor();
         defaultPointAdvisor.setPointcut(druidStatPointcut);
         defaultPointAdvisor.setAdvice(druidStatInterceptor);
-
         return defaultPointAdvisor;
     }
-    @Bean
-    public List<Filter> proxyFilters(){
+
+    private List<Filter> proxyFilters(){
         //将自定义filter加入druid
         return Lists.newArrayList(new TestFilter());
     }
